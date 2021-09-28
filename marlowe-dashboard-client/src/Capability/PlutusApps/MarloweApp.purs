@@ -30,7 +30,7 @@ import Effect.AVar as EAVar
 import Effect.Aff.AVar as AVar
 import Effect.Aff.Class (class MonadAff, liftAff)
 import Marlowe.PAB (PlutusAppId)
-import Marlowe.Semantics (Contract, MarloweParams, SlotInterval(..), TokenName, TransactionInput(..))
+import Marlowe.Semantics (Contract, MarloweParams, SlotInterval(..), TokenName, TransactionInput(..), PubKeyHash)
 import Plutus.Contract.Effects (ActiveEndpoint, _ActiveEndpoint)
 import Plutus.V1.Ledger.Crypto (PubKeyHash) as Back
 import Plutus.V1.Ledger.Slot (Slot) as Back
@@ -38,7 +38,6 @@ import Plutus.V1.Ledger.Value (TokenName) as Back
 import PlutusTx.AssocMap (Map) as Back
 import Types (AjaxResponse)
 import Wallet.Types (_EndpointDescription)
-import Contacts.Types (PubKeyHash)
 
 class MarloweApp m where
   createContract :: PlutusAppId -> Map TokenName PubKeyHash -> Contract -> m (AjaxResponse Unit)

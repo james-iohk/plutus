@@ -57,13 +57,13 @@ import Halogen (HalogenM, liftAff)
 import MainFrame.Types (Msg)
 import Marlowe.Client (ContractHistory(..))
 import Marlowe.PAB (PlutusAppId(..))
-import Marlowe.Semantics (Assets(..), Contract, MarloweData(..), MarloweParams(..), TokenName, TransactionInput, _rolePayoutValidatorHash, asset, emptyState)
+import Marlowe.Semantics (Assets(..), Contract, MarloweData(..), MarloweParams(..), TokenName, TransactionInput, _rolePayoutValidatorHash, asset, emptyState, PubKeyHash(..))
 import MarloweContract (MarloweContract(..))
 import Plutus.PAB.Webserver.Types (ContractInstanceClientState)
 import Servant.PureScript.Ajax (AjaxError(..), ErrorDescription(..))
 import Types (AjaxResponse, DecodedAjaxResponse)
 import Contacts.Lenses (_companionAppId, _marloweAppId, _pubKey, _pubKeyHash, _wallet, _walletInfo)
-import Contacts.Types (PubKeyHash(..), Wallet(..), WalletDetails, WalletInfo(..))
+import Contacts.Types (Wallet(..), WalletDetails, WalletInfo(..))
 
 -- The `ManageMarlowe` class provides a window on the `ManageContract`, `ManageWallet`, and
 -- `ManageWebsocket` capabilities with functions specific to Marlowe. Or rather, it does when the
@@ -129,8 +129,8 @@ instance manageMarloweAppM :: ManageMarlowe AppM where
           walletInfo =
             WalletInfo
               { wallet: Wallet uuidString
-              , pubKey: uuidString
-              , pubKeyHash: PubKeyHash uuidString
+              , pubKey: Just uuidString
+              , pubKeyHash: uuidString
               }
 
           assets = Assets $ singleton "" $ singleton "" (fromInt 1000000 * fromInt 10000)
@@ -251,14 +251,14 @@ instance manageMarloweAppM :: ManageMarlowe AppM where
               , marloweState: emptyState zero
               }
         void $ insertContract marloweParams (marloweData /\ mempty)
-        void $ insertWalletRoleContracts (view (_walletInfo <<< _pubKey) walletDetails) marloweParams marloweData
+        void $ insertWalletRoleContracts (view (_walletInfo <<< _pubKeyHash) walletDetails) marloweParams marloweData
         let
           unfoldableRoles :: Array (Tuple TokenName PubKeyHash)
           unfoldableRoles = toUnfoldable roles
         void
           $ for unfoldableRoles \(tokenName /\ pubKeyHash) -> do
               void $ addAssets pubKeyHash $ asset (toString uuid) tokenName (fromInt 1)
-              void $ insertWalletRoleContracts (unwrap pubKeyHash) marloweParams marloweData
+              void $ insertWalletRoleContracts pubKeyHash marloweParams marloweData
         pure $ Right unit
   -- "apply-inputs" to a Marlowe contract on the blockchain
   applyTransactionInput walletDetails marloweParams transactionInput = do
@@ -354,7 +354,7 @@ instance manageMarloweAppM :: ManageMarlowe AppM where
           observableStateJson <- withExceptT Left $ ExceptT $ Contract.getContractInstanceObservableState companionAppId
           mapExceptT (pure <<< lmap Right <<< unwrap) $ decodeJSON $ unwrap observableStateJson
       LocalStorage -> do
-        roleContracts <- getWalletRoleContracts $ view (_walletInfo <<< _pubKey) walletDetails
+        roleContracts <- getWalletRoleContracts $ view (_walletInfo <<< _pubKeyHash) walletDetails
         pure $ Right roleContracts
   -- get all MarloweFollower apps for a given wallet
   getFollowerApps walletDetails = do
@@ -382,7 +382,7 @@ instance manageMarloweAppM :: ManageMarlowe AppM where
               Left decodingErrors -> Left decodingErrors
               Right observableState -> Right (plutusAppId /\ observableState)
       LocalStorage -> do
-        roleContracts <- getWalletRoleContracts $ view (_walletInfo <<< _pubKey) walletDetails
+        roleContracts <- getWalletRoleContracts $ view (_walletInfo <<< _pubKeyHash) walletDetails
         allContracts <- getContracts
         let
           roleContractsToHistory :: MarloweParams -> MarloweData -> Maybe (Tuple PlutusAppId ContractHistory)

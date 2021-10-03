@@ -19,12 +19,11 @@ import qualified Data.Map                                 as Map
 import qualified Data.Set                                 as Set
 import qualified Generators                               as Gen
 import qualified Plutus.ChainIndex.DbStoreSpec            as DbStoreSpec
-import qualified Plutus.ChainIndex.Emulator.DiskState     as DiskState
 import qualified Plutus.ChainIndex.Emulator.DiskStateSpec as DiskStateSpec
 import qualified Plutus.ChainIndex.Emulator.HandlersSpec  as EmulatorHandlersSpec
 import qualified Plutus.ChainIndex.HandlersSpec           as HandlersSpec
 import qualified Plutus.ChainIndex.PaginationSpec         as PaginationSpec
-import           Plutus.ChainIndex.Tx                     (citxTxId, txOutsWithRef)
+import           Plutus.ChainIndex.Tx                     (citxTxId)
 import           Plutus.ChainIndex.TxIdState              (dropOlder, increaseDepth, transactionStatus)
 import qualified Plutus.ChainIndex.TxIdState              as TxIdState
 import           Plutus.ChainIndex.Types                  (BlockNumber (..), Depth (..), Tip (..),

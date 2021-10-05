@@ -62,7 +62,7 @@ import MarloweContract (MarloweContract(..))
 import Plutus.PAB.Webserver.Types (ContractInstanceClientState)
 import Servant.PureScript.Ajax (AjaxError(..), ErrorDescription(..))
 import Types (AjaxResponse, DecodedAjaxResponse)
-import Contacts.Lenses (_companionAppId, _marloweAppId, _pubKey, _pubKeyHash, _wallet, _walletInfo)
+import Contacts.Lenses (_companionAppId, _marloweAppId, _pubKeyHash, _wallet, _walletInfo)
 import Contacts.Types (Wallet(..), WalletDetails, WalletInfo(..))
 
 -- The `ManageMarlowe` class provides a window on the `ManageContract`, `ManageWallet`, and
@@ -129,7 +129,6 @@ instance manageMarloweAppM :: ManageMarlowe AppM where
           walletInfo =
             WalletInfo
               { wallet: Wallet uuidString
-              , pubKey: Just uuidString
               , pubKeyHash: uuidString
               }
 

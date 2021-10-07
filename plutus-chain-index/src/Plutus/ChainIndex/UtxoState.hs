@@ -59,7 +59,7 @@ import           Ledger                            (TxIn (txInRef), TxOutRef (..
 import           Plutus.ChainIndex.ChainIndexError (InsertUtxoFailed (..), RollbackFailed (..))
 import           Plutus.ChainIndex.ChainIndexLog   (InsertUtxoPosition (..))
 import           Plutus.ChainIndex.Tx              (ChainIndexTx (..), citxInputs, txOutsWithRef)
-import           Plutus.ChainIndex.Types           (BlockNumber (..), Point (..), Tip (..), pointsToTip)
+import           Plutus.ChainIndex.Types           (Point (..), Tip (..), pointsToTip)
 import           Prettyprinter                     (Pretty (..))
 
 -- | The effect of a transaction (or a number of them) on the utxo set.

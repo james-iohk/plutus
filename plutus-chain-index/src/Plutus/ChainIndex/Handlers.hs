@@ -24,7 +24,7 @@ import           Control.Lens                      (Lens', _Just, ix, view, (^?)
 import           Control.Monad.Freer               (Eff, Member, type (~>))
 import           Control.Monad.Freer.Error         (Error, throwError)
 import           Control.Monad.Freer.Extras.Beam   (BeamEffect (..), BeamableSqlite, addRowsInBatches, combined,
-                                                    deleteRows, selectList, selectOne)
+                                                    deleteRows, selectList, selectOne, updateRows)
 import           Control.Monad.Freer.Extras.Log    (LogMsg, logDebug, logError, logWarn)
 import           Control.Monad.Freer.State         (State, get, gets, put)
 import           Data.ByteString                   (ByteString)

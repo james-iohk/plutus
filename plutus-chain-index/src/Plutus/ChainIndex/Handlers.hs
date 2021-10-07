@@ -285,7 +285,7 @@ insertUtxoDb (UtxoState.UtxoState (UtxoState.TxUtxoBalance outputs inputs) (Tip 
         where
             tipRowId = TipRowId (fromIntegral sl)
 
-reduceOldUtxoDb :: Member DbStoreEffect effs => Tip -> Eff effs ()
+reduceOldUtxoDb :: Member BeamEffect effs => Tip -> Eff effs ()
 reduceOldUtxoDb TipAtGenesis = pure ()
 reduceOldUtxoDb (Tip slotNo _ _) = do
     -- Delete all the tips before 'slot'
@@ -313,7 +313,7 @@ reduceOldUtxoDb (Tip slotNo _ _) = do
         slot :: Word64
         slot = fromIntegral slotNo
 
-rollbackUtxoDb :: Member DbStoreEffect effs => Point -> Eff effs ()
+rollbackUtxoDb :: Member BeamEffect effs => Point -> Eff effs ()
 rollbackUtxoDb PointAtGenesis = deleteRows $ delete (tipRows db) (const (val_ True))
 rollbackUtxoDb (Point slot _) = do
     deleteRows $ delete (tipRows db) (\row -> _tipRowSlot row >. val_ (fromIntegral slot))

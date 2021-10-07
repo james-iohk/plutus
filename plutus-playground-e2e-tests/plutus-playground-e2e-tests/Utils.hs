@@ -21,7 +21,7 @@ assertURL s = do
     assertTrue (url == s) ("Actual URL: " ++ url ++ " Expected URL: " ++ s)
 
 waitForElem :: (WebDriver wd) => Text -> wd Element
-waitForElem xp = waitUntil 10 $ findElem $ ByXPath xp
+waitForElem xp = waitUntil 60 $ findElem $ ByXPath xp
 
 clickElem :: (WebDriver wd) => Text -> wd ()
 clickElem xp = do

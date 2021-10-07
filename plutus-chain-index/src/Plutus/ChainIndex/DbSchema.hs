@@ -30,16 +30,15 @@ database schema for the data which we wish to store:
 
 module Plutus.ChainIndex.DbSchema where
 
-import           Data.ByteString                   (ByteString)
-import           Data.Kind                         (Constraint)
-import           Data.Semigroup.Generic            (GenericSemigroupMonoid (..))
-import           Data.Word                         (Word64)
-import           Database.Beam                     (Beamable, Columnar, Database, DatabaseSettings, Generic, Identity,
-                                                    Table (..), TableEntity, dbModification, withDbModification)
-import           Database.Beam.Migrate             (CheckedDatabaseSettings, defaultMigratableDbSettings,
-                                                    renameCheckedEntity, unCheckDatabase)
-import           Database.Beam.Sqlite              (Sqlite)
-import           Plutus.ChainIndex.ChainIndexError (ChainIndexError (..))
+import           Data.ByteString        (ByteString)
+import           Data.Kind              (Constraint)
+import           Data.Semigroup.Generic (GenericSemigroupMonoid (..))
+import           Data.Word              (Word64)
+import           Database.Beam          (Beamable, Columnar, Database, DatabaseSettings, Generic, Identity, Table (..),
+                                         TableEntity, dbModification, withDbModification)
+import           Database.Beam.Migrate  (CheckedDatabaseSettings, defaultMigratableDbSettings, renameCheckedEntity,
+                                         unCheckDatabase)
+import           Database.Beam.Sqlite   (Sqlite)
 
 data DatumRowT f = DatumRow
     { _datumRowHash  :: Columnar f ByteString

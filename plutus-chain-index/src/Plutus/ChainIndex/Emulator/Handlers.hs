@@ -44,7 +44,7 @@ import           Plutus.ChainIndex.Effects            (ChainIndexControlEffect (
 import           Plutus.ChainIndex.Emulator.DiskState (DiskState, addressMap, dataMap, redeemerMap, scriptMap, txMap)
 import qualified Plutus.ChainIndex.Emulator.DiskState as DiskState
 import           Plutus.ChainIndex.Tx                 (ChainIndexTx, _ValidTx, citxOutputs)
-import           Plutus.ChainIndex.Types              (Diagnostics (..), Tip (..), pageOf)
+import           Plutus.ChainIndex.Types              (Diagnostics (..), Point (PointAtGenesis), Tip (..), pageOf)
 import           Plutus.ChainIndex.UtxoState          (InsertUtxoSuccess (..), RollbackResult (..), TxUtxoBalance,
                                                        UtxoIndex, isUnspentOutput, tip, utxoState)
 import qualified Plutus.ChainIndex.UtxoState          as UtxoState
@@ -170,6 +170,10 @@ handleControl = \case
             Right RollbackResult{newTip, rolledBackIndex} -> do
                 put $ oldState & set utxoIndex rolledBackIndex
                 logDebug $ RollbackSuccess newTip
+    ResumeSync PointAtGenesis -> pure ()
+    ResumeSync _ ->
+        -- The emulator can only resume from genesis.
+        throwError ResumeNotSupported
     CollectGarbage -> do
         -- Rebuild the index using only transactions that still have at
         -- least one output in the UTXO set

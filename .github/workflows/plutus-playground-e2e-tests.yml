@@ -52,7 +52,7 @@ jobs:
 
     - name: Run Selenium Server
       working-directory: ./plutus-playground-e2e-tests
-      run: xvfb-run java -jar selenium-server-standalone-3.141.59.jar &
+      run: xvfb-run java -jar selenium-server-4.0.0.jar standalone &
 
     - name: Run Tests
       working-directory: ./plutus-playground-e2e-tests/

@@ -51,11 +51,11 @@ jobs:
         while ! echo exit | nc localhost $CLIENT_PORT; do echo "Waiting for playground client on $CLIENT_PORT" && sleep 10; done
 
     - name: Run Selenium Server
-      working-directory: ./plutus-playground-e2e-tests
+      working-directory: ./e2e-tests
       run: xvfb-run java -jar selenium-server-4.0.0.jar standalone &
 
     - name: Run Tests
-      working-directory: ./plutus-playground-e2e-tests/
+      working-directory: ./e2e-tests/
       run: |
         echo "Running tests"
         cabal build plutus-playground-e2e-tests

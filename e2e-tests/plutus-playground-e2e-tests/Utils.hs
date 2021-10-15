@@ -31,10 +31,10 @@ getElem :: (WebDriver wd) => Text -> wd Element
 getElem xp = findElem $ ByXPath xp
 
 waitForElem :: (WebDriver wd) => Text -> wd Element
-waitForElem xp = waitUntil 30 $ getElem xp -- 30s for slower compiling in CI
+waitForElem xp = waitUntil 60 $ getElem xp -- 60s for slower compiling in CI
 
 waitForElemText :: (WebDriver wd) => Element -> Text -> wd ()
-waitForElemText e t = waitUntil 30 $ assertText e t -- 30s for slower compiling in CI
+waitForElemText e t = waitUntil 60 $ assertText e t -- 60s for slower compiling in CI
 
 clickElem :: (WebDriver wd) => Text -> wd ()
 clickElem xp = do
